@@ -48,13 +48,22 @@ async def repeat(ctx, times: int, content='repeating...'):
 @bot.command()
 async def img_random(ctx):
     os.system("cls")
-    lista_archivos = os.listdir('imagenes')
+
+    # rarezas y probabilidades
+    rarezas = ["comun", "poco_comun"]
+    probabilidades = [80, 20]
+
+    rareza = random.choices(rarezas, probabilidades)[0]
+
+    ruta = f'imagenes/{rareza}'
+    lista_archivos = os.listdir(ruta)
     img_name = random.choice(lista_archivos)
-    # ¡Y así es como se puede sustituir el nombre del fichero desde una variable!
-    with open(f'imagenes/{img_name}', 'rb') as f:
+
+    with open(f'{ruta}/{img_name}', 'rb') as f:
         picture = discord.File(f)
 
-    await ctx.send(file = picture)
+    await ctx.send(f"🎲 Rareza: **{rareza}**")
+    await ctx.send(file=picture)
 
 def get_duck_image_url():    
     url = 'https://random-d.uk/api/random'
@@ -70,4 +79,5 @@ async def duck(ctx):
     await ctx.send(image_url)
     
 bot.run("TOKEN")
+
 
