@@ -44,5 +44,30 @@ async def repeat(ctx, times: int, content='repeating...'):
     """Repeats a message multiple times."""
     for i in range(times):
         await ctx.send(content)
-        
+
+@bot.command()
+async def img_random(ctx):
+    os.system("cls")
+    lista_archivos = os.listdir('imagenes')
+    img_name = random.choice(lista_archivos)
+    # ¡Y así es como se puede sustituir el nombre del fichero desde una variable!
+    with open(f'imagenes/{img_name}', 'rb') as f:
+        picture = discord.File(f)
+
+    await ctx.send(file = picture)
+
+def get_duck_image_url():    
+    url = 'https://random-d.uk/api/random'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
+
+@bot.command('duck')
+async def duck(ctx):
+    '''Una vez que llamamos al comando duck, 
+    el programa llama a la función get_duck_image_url'''
+    image_url = get_duck_image_url()
+    await ctx.send(image_url)
+    
 bot.run("TOKEN")
+
